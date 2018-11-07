@@ -1,0 +1,27 @@
+textarea {
+  display: block;
+  padding: 5px;
+  font-family: monospace;
+  font-size: 12px;
+}
+
+div.app {
+  position: relative;
+  margin: 100px auto;
+  width: 600px;
+}
+
+div.input-container {
+  margin: 10px;
+}
+
+div.output-container {
+  margin: 10px;
+}
+
+#base64 {
+  position: relative;
+  margin: 0 auto;
+  width: 500px;
+  resize: vertical;
+}
