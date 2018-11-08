@@ -1,60 +1,47 @@
-let fileInp = document.querySelector("input");
-let img = document.querySelector("img");
-let outputText = document.querySelector("textarea#base64")
-// fileInp.type = "file";
-// document.body.appendChild(fileInp);
+let fileInp = document.querySelector("input#file");
+let textInp = document.querySelector("textarea#text");
+let img = document.querySelector("img.image-upload");
+let outputText = document.querySelector("textarea#base64");
+let convertButton = document.querySelector("button#convert");
 
 const base64table = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 var bytes;
 
-var binaryReader = new FileReader();
+const binaryReader = new FileReader();
+const encoder = new TextEncoder();
+let file;
+
+convertButton.onclick = function(event) {
+  if(!textInp) {
+    console.warn("Uh, we didn't find the text input. Sorry, something broke...");
+    return;
+  }
+  if(!textInp.value) return;
+  
+  let bytes = encoder.encode(textInp.value);
+  outputText.innerText = toBase64(bytes);
+}
 
 fileInp.onchange = function(event) {
-    binaryReader.readAsArrayBuffer(event.target.files[0]);
-    binaryReader.onload = function(event) {
-        bytes = new Uint8Array(event.target.result);
-        let b64 = toBase64(bytes);
+  console.log(event.target.files);
+  console.log(event.target.files[0]);
 
-        // The crutches
-        //
-        // .png
-        // iVBORw0KGgoAAAANSUhEUgAA
-        //
-        // .jpg
-        // /9j/4AAQSkZJRgABAQ
-        //
-        // .gif
-        // R0lGODlh
+  file = event.target.files[0];
+  if(!file) return;
 
-        let imgExtensions = {
-            png: "iVBORw0KGgoAAAANSUhEUgAA",
-            jpeg: "/9j/4AAQSkZJRgABAQ",
-            gif: "R0lGODlh"
-        };
+  binaryReader.readAsArrayBuffer(file);
+  binaryReader.onload = function(event) {
+    bytes = new Uint8Array(event.target.result);
+    let b64 = toBase64(bytes);
 
-        let extension;
+    let extension = checkExtension(b64);
 
-        for(var ext in imgExtensions) {
-            let matches = true;
-            for(let i = 0; i < imgExtensions[ext].length; i++) {
-                matches = matches && b64[i] === imgExtensions[ext][i];
-                if(!matches) break;
-            }
-            if(matches) extension = ext;
-        }
+    if(extension) {
+      img.src = `data:image/${extension};base64,${b64}`;
+    }
 
-        if(extension) {
-            img.style.width = "500px";
-            img.src = `data:image/${extension};base64,${b64}`;
-        }
-        outputText.style = `
-            width: 600px;
-            height: 600px;
-            overflow: scroll;
-            word-wrap:break-word;
-        `;
-        outputText.innerText = b64;
-    };
+    outputText.innerText = b64;
+  };
 };
 
 function toBase64(uint8arr) {
@@ -109,6 +96,31 @@ function toBase64(uint8arr) {
     return result;
 }
 
+// The crutches
+//
+// .png
+// iVBORw0KGgoAAAANSUhEUgAA
+//
+// .jpg
+// /9j/4AAQSkZJRgABAQ
+//
+// .gif
+// R0lGODlh
 
-// no cors url
-// var imgUrl = "https://avatars2.githubusercontent.com/u/46?v=4";
+function checkExtension(base64) {
+  let imgExtensions = {
+      png: "iVBORw0KGgoAAAANSUhEUgAA",
+      jpeg: "/9j/4AAQSkZJRgABAQ",
+      gif: "R0lGODlh"
+  };
+  let extension;
+  for(var ext in imgExtensions) {
+      let matches = true;
+      for(let i = 0; i < imgExtensions[ext].length; i++) {
+          matches = matches && base64[i] === imgExtensions[ext][i];
+          if(!matches) break;
+      }
+      if(matches) extension = ext;
+  }
+  return extension;
+}

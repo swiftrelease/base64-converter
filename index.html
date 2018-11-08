@@ -6,14 +6,22 @@
   </head>
   <body>
     <div class="app">
-      <div class="input-container">
-        <textarea id="text"></textarea>
-        <input type="file"></input>
+      <h3 class="text-header">Enter some text to convert it to Base64...</h3>
+      <div class="container">
+        <div class="txtarea-wrapper">
+          <textarea id="text" rows="10" cols="40"></textarea>
+        </div>
+        <button type="button" id="convert">▷</button>
+        <div class="txtarea-wrapper">
+          <textarea id="base64" rows="20" cols="40" readonly>Base64 will be here...</textarea>
+        </div>
+        <div class="file-wrapper">
+          <label for="file">...or select a file to convert it.</label>
+          <br>
+          <input type="file" name="file" id="file"></input>
+        </div>
       </div>
-      <div class="output-container">
-        <textarea id="base64" rows="20" cols="60" readonly></textarea>
-        <img class="image">
-      </div>
+      <img class="image-upload">
     </div>
     <script src="toBase64.js"></script>
   </body>
