@@ -1,3 +1,7 @@
+body {
+  font-family: monospace;
+}
+
 textarea {
   display: inline-block;
   /* float: left; */
@@ -51,6 +55,8 @@ button#convert {
   display: block;
   float: left;
   margin: 0 5%;
+  padding: 1em;
+  border-radius: 5px;
 }
 
 textarea#text {
@@ -66,6 +72,7 @@ input#file {
   bottom: 100px; */
   margin: 10px;
   color: red;
+  font-family: monospace;
 }
 
 textarea#base64 {

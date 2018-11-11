@@ -17,7 +17,7 @@ convertButton.onclick = function(event) {
     return;
   }
   if(!textInp.value) return;
-  
+
   let bytes = encoder.encode(textInp.value);
   outputText.innerText = toBase64(bytes);
 }
@@ -42,6 +42,7 @@ fileInp.onchange = function(event) {
 
     outputText.innerText = b64;
   };
+  // event.target.value = "";
 };
 
 function toBase64(uint8arr) {
