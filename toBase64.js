@@ -11,6 +11,11 @@ const binaryReader = new FileReader();
 const encoder = new TextEncoder();
 let file;
 
+File.prototype.isImage = function() {
+  return this.type.indexOf("image") === 0;
+}
+
+
 convertButton.onclick = function(event) {
   if(!textInp) {
     console.warn("Uh, we didn't find the text input. Sorry, something broke...");
@@ -27,17 +32,20 @@ fileInp.onchange = function(event) {
   console.log(event.target.files[0]);
 
   file = event.target.files[0];
-  if(!file) return;
+
+  if(!file) {
+    this.style.color = "red";
+    return;
+  }
+  this.style.color = "black";
 
   binaryReader.readAsArrayBuffer(file);
   binaryReader.onload = function(event) {
     bytes = new Uint8Array(event.target.result);
     let b64 = toBase64(bytes);
 
-    let extension = checkExtension(b64);
-
-    if(extension) {
-      img.src = `data:image/${extension};base64,${b64}`;
+    if(file.isImage()) {
+      img.src = `data:${file.type};base64,${b64}`;
     }
 
     outputText.innerText = b64;
@@ -95,33 +103,4 @@ function toBase64(uint8arr) {
     }
 
     return result;
-}
-
-// The crutches
-//
-// .png
-// iVBORw0KGgoAAAANSUhEUgAA
-//
-// .jpg
-// /9j/4AAQSkZJRgABAQ
-//
-// .gif
-// R0lGODlh
-
-function checkExtension(base64) {
-  let imgExtensions = {
-      png: "iVBORw0KGgoAAAANSUhEUgAA",
-      jpeg: "/9j/4AAQSkZJRgABAQ",
-      gif: "R0lGODlh"
-  };
-  let extension;
-  for(var ext in imgExtensions) {
-      let matches = true;
-      for(let i = 0; i < imgExtensions[ext].length; i++) {
-          matches = matches && base64[i] === imgExtensions[ext][i];
-          if(!matches) break;
-      }
-      if(matches) extension = ext;
-  }
-  return extension;
 }

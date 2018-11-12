@@ -2,18 +2,19 @@
   <head>
     <!-- <link href="https://fonts.googleapis.com/css?family=Knewave|Monoton|Ubuntu" rel="stylesheet"> -->
     <link rel='stylesheet' type='text/css' href='style.css'>
+    <link rel="shortcut icon" href="https://4minutewarning.net/4.ico" type="image/x-icon">
     <title>Base64 converter</title>
   </head>
   <body>
     <div class="app">
-      <h3 class="text-header">Enter some text to convert it to Base64...</h3>
+      <h2 class="text-header">Base64 converter</h2>
       <div class="container">
         <div class="txtarea-wrapper">
-          <textarea id="text" rows="10" cols="40"></textarea>
+          <textarea id="text" rows="15" cols="40" placeholder="Enter some text and click 'Convert'..."></textarea>
         </div>
-        <button type="button" id="convert">▷</button>
+        <button type="button" id="convert">Convert</button>
         <div class="txtarea-wrapper">
-          <textarea id="base64" rows="20" cols="40" readonly>Base64 will be here...</textarea>
+          <textarea id="base64" rows="20" cols="40" readonly placeholder="Base64 will be here..."></textarea>
         </div>
         <div class="file-wrapper">
           <label for="file">...or select a file to convert it.</label>
@@ -23,6 +24,7 @@
       </div>
       <img class="image-upload">
     </div>
+    <footer>Disclaimer: the files or text you submit are not sent to the server; this converter is fully client-side.</footer>
     <script src="toBase64.js"></script>
   </body>
 </html>
